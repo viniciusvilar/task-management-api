@@ -18,8 +18,8 @@ export class AuthService {
         this.jwtExpirationTimeInSeconds = +this.configService.get<number>('JWT_EXPIRATION_TIME')
     }
 
-    signIn(user: AuthDto): AuthResponseDto {
-        const foundUser = this.userService.findByUsername(user.username)
+    async signIn(user: AuthDto): Promise<AuthResponseDto> {
+        const foundUser = await this.userService.findByUsername(user.username)
 
         if (!foundUser || !compareSync(user.password, foundUser.password)) {
             throw new HttpException("Username or Password incorrect", HttpStatus.UNAUTHORIZED)
